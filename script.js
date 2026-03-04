@@ -1,3 +1,9 @@
+// --- IMAGE ASSETS ---
+const handImages = {
+    rock: 'images/rock.png',   
+    paper: 'images/paper.png',  
+    scissors: 'images/scissor.png'         
+};
 
 // --- DOM ELEMENTS ---
 const initialView = document.getElementById('initial-view');
@@ -92,14 +98,17 @@ function displayChoicesInResult(playerChoice, pcChoice, result) {
 }
 
 function updateScoreAndUI(result, playerChoice, pcChoice) {
+    // Update Score
     if (result === 'WIN') scores.player++;
     else if (result === 'LOSE') scores.computer++;
     
     saveScores();
     updateScoreDisplay();
     
+    // Hide Next button by default
     nextBtn.classList.add('hidden');
     
+    // Update Text based on outcome
     if (result === 'WIN') {
         resultMessage.textContent = 'YOU WIN';
         resultAgainstPC.textContent = 'AGAINST PC';
@@ -115,8 +124,10 @@ function updateScoreAndUI(result, playerChoice, pcChoice) {
         actionButton.textContent = 'REPLAY';
     }
     
+    // Render the selected hands
     displayChoicesInResult(playerChoice, pcChoice, result);
     
+    // Switch screens
     initialView.classList.add('hidden');
     resultView.classList.remove('hidden');
 }
@@ -139,6 +150,8 @@ function resetToInitialView() {
 }
 
 // --- EVENT LISTENERS ---
+
+// Main Game Buttons
 gameChoicesBtns.forEach(button => {
     button.addEventListener('click', (e) => {
         const playerChoice = e.currentTarget.dataset.choice;
@@ -148,24 +161,21 @@ gameChoicesBtns.forEach(button => {
     });
 });
 
+// Rules Popup
 rulesBtn.addEventListener('click', () => rulesPopup.classList.remove('hidden'));
 closeRulesBtn.addEventListener('click', () => rulesPopup.classList.add('hidden'));
 
+// Next Button (To Hurray Screen)
 nextBtn.addEventListener('click', (e) => {
     e.preventDefault();
     showHurrayScreen();
 });
 
+// Hurray Play Again Button
 document.getElementById('hurray-play-again').addEventListener('click', (e) => {
     e.preventDefault();
     resetToInitialView();
 });
 
+// Result View Play Again Button
 actionButton.addEventListener('click', () => resetToInitialView());
-
-// Load images into the initial view on startup
-window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('rock-icon').src = handImages.rock;
-    document.getElementById('paper-icon').src = handImages.paper;
-    document.getElementById('scissors-icon').src = handImages.scissors;
-});
